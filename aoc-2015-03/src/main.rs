@@ -31,17 +31,23 @@ fn main() {
     let starting_coordinates = Coordinate { x: 0, y: 0 };
 
     let mut visited_coordinates: HashSet<Coordinate> = HashSet::from([starting_coordinates]);
-    let mut current_coordinates = starting_coordinates;
+    let mut santa_coordinate = starting_coordinates;
+    let mut robot_coordinate = starting_coordinates;
 
-    for direction in directions {
-        current_coordinates = move_santa(direction, current_coordinates);
-        visited_coordinates.insert(current_coordinates);
+    for (idx, direction) in directions.enumerate() {
+        if idx % 2 == 0 {
+            santa_coordinate = move_character(direction, santa_coordinate);
+            visited_coordinates.insert(santa_coordinate);
+        } else {
+            robot_coordinate = move_character(direction, robot_coordinate);
+            visited_coordinates.insert(robot_coordinate);
+        }
     }
 
     println!("{:?}", visited_coordinates.into_iter().count())
 }
 
-fn move_santa(direction: char, current_coordinate: Coordinate) -> Coordinate {
+fn move_character(direction: char, current_coordinate: Coordinate) -> Coordinate {
     match direction {
         '^' => Coordinate {
             x: current_coordinate.x,
